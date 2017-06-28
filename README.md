@@ -20,4 +20,4 @@ web.xml中配置servlet
     <servlet-mapping>  
         <servlet-name>HystrixMetricsStreamServlet</servlet-name>  
         <url-pattern>/hystrix.stream</url-pattern>  
-    </servlet-mapping>  
+    </servlet-mapping>
