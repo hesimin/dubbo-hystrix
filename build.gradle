@@ -1,0 +1,64 @@
+group 'com.github.hesimin'
+version '1.0-SNAPSHOT'
+def artifactId = "dubbo-hystrix"
+
+apply plugin: 'maven'
+apply plugin: 'java'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.7
+
+repositories {
+    mavenLocal()
+    maven {
+        url "http://10.0.18.22:8081/nexus/content/groups/public/"
+    }
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.netflix.hystrix:hystrix-core:1.5.12'
+    compile 'com.netflix.hystrix:hystrix-metrics-event-stream:1.5.12'
+    compileOnly 'com.alibaba:dubbo:2.5.3'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+// maven pom
+install {
+    repositories.mavenInstaller {
+        pom.version = "$project.version"
+        pom.artifactId = "$artifactId"
+        pom.groupId = "$project.group"
+    }
+}
+
+//上传到nexus
+uploadArchives {
+    repositories {
+        def File propFile = new File('./mavenAccount.properties')
+        def Properties props = new Properties()
+        props.load(new FileInputStream(propFile))
+
+        mavenDeployer {
+            repository(url: "http://10.0.18.22:8081/nexus/content/repositories/releases/") {
+                def repositoryUserName = props['repositoryUserName']
+                def repositoryPassword = props['repositoryPassword']
+                authentication(userName: "admin", password: "admin123")
+                println '上传release到远程仓库'
+            }
+            snapshotRepository(url: 'http://10.0.18.22:8081/nexus/content/repositories/snapshots/') {
+                def repositoryUserName = props['snapshot-userName']
+                def repositoryPassword = props['snapshot-password']
+                authentication(userName: repositoryUserName, password: repositoryPassword)
+                println '上传snapshot到远程仓库'
+            }
+            pom.version = "$project.version"
+            pom.artifactId = "$artifactId"
+            pom.groupId = "$project.group"
+        }
+    }
+}

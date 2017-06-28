@@ -1,0 +1,1 @@
+hystrix=com.github.hesimin.hystrix.dubbo.DubboHystrixFilter
