@@ -4,6 +4,7 @@ import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.rpc.Invocation;
 import com.alibaba.dubbo.rpc.Invoker;
 import com.alibaba.dubbo.rpc.Result;
+import com.alibaba.dubbo.rpc.RpcException;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandKey;
@@ -14,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 这里的隔离指的是在消费方对有问题的服务发起调用时进行阻止，这样有问题的服务方就不会接受到该调用，以便进行恢复
- * <p>服务方service抛出的异常是被 dubbo 包在 Result.getException 里面的，不会触发熔断，只有网络等原因导致 invoker.invoke(invocation) 抛出了异常才会进入熔断计数 </p>
+ * <p>服务方service抛出的异常是被 dubbo 包在 Result.getException 里面的，不会触发熔断，只有超时、网络等原因导致 invoker.invoke(invocation) 抛出了异常才会进入熔断计数 </p>
  *
  * @author hesimin 2017-03-19
  */
