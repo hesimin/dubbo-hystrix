@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DubboHystrixCommand extends HystrixCommand<Result> {
     private static       Logger logger                       = LoggerFactory.getLogger(DubboHystrixCommand.class);
-    private static final int    DEFAULT_THREADPOOL_CORE_SIZE = 30;
+    private static final int    DEFAULT_THREADPOOL_CORE_SIZE = 200;
     private Invoker<?> invoker;
     private Invocation invocation;
 
@@ -34,7 +34,7 @@ public class DubboHystrixCommand extends HystrixCommand<Result> {
                         invocation.getArguments() == null ? 0 : invocation.getArguments().length)))
                 .andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
                         .withCircuitBreakerRequestVolumeThreshold(20)// 熔断触发的最小个数/10s
-                        .withCircuitBreakerSleepWindowInMilliseconds(30000)// 熔断器中断请求30秒后会进入半打开状态,放部分流量过去重试
+                        .withCircuitBreakerSleepWindowInMilliseconds(5000)// 熔断后的重试时间窗口:熔断开关打开后，在该时间窗口允许有一次重试，如果重试成功，则将重置Health采样统计并闭合熔断开关实现快速恢复，否则熔断开关还是打开状态，执行快速失败。
                         .withCircuitBreakerErrorThresholdPercentage(50)// 错误率达到50开启熔断保护
                         .withExecutionTimeoutEnabled(false))// 使用dubbo的超时，禁用这里的超时
                 .andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter().withCoreSize(getThreadPoolCoreSize(invoker.getUrl()))));//线程池数
