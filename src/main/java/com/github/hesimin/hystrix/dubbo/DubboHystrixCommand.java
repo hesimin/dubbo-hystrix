@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DubboHystrixCommand extends HystrixCommand<Result> {
     private static       Logger logger                       = LoggerFactory.getLogger(DubboHystrixCommand.class);
-    private static final int    DEFAULT_THREADPOOL_CORE_SIZE = 200;
+    private static final int    DEFAULT_THREADPOOL_CORE_SIZE = 100;
     private Invoker<?> invoker;
     private Invocation invocation;
 
