@@ -1,10 +1,12 @@
 # dubbo-hystrix
 
-##一、使用
+熔断的目的：隔离有问题的服务，防止问题扩散导致整个服务不可用。
 
-引入jar
+## 一、使用
 
-##二、hystrix-dashboard
+引入jar  (com.github.hesimin.hystrix.dubbo.DubboHystrixCommand 里面的参数需要根据情况进行调整)
+
+## 二、hystrix-dashboard
 
 开放 http 接口，向 hystrix-dashboard 提供数据(dubbo 非web启动不可用？)
 
