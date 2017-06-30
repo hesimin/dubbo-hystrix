@@ -34,7 +34,7 @@ public class DubboHystrixCommand extends HystrixCommand<Result> {
                         invocation.getArguments() == null ? 0 : invocation.getArguments().length)))
                 .andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
                         .withCircuitBreakerRequestVolumeThreshold(20)// 熔断触发的最小个数/10s
-                        .withCircuitBreakerSleepWindowInMilliseconds(5000)// 熔断后的重试时间窗口:熔断开关打开后，在该时间窗口允许有一次重试，如果重试成功，则将重置Health采样统计并闭合熔断开关实现快速恢复，否则熔断开关还是打开状态，执行快速失败。
+                        .withCircuitBreakerSleepWindowInMilliseconds(15000)// 熔断后的重试时间窗口:熔断开关打开后，在该时间窗口允许有一次重试，如果重试成功，则将重置Health采样统计并闭合熔断开关实现快速恢复，否则熔断开关还是打开状态，执行快速失败。
                         .withCircuitBreakerErrorThresholdPercentage(50)// 错误率达到50开启熔断保护
                         .withExecutionTimeoutEnabled(false))// 使用dubbo的超时，禁用这里的超时
                 .andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter().withCoreSize(getThreadPoolCoreSize(invoker.getUrl()))));//线程池数
